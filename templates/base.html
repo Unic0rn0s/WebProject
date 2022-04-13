@@ -8,6 +8,14 @@
         <title>{{ title }}</title>
     </head>
     <body>
+        {% if current_user.is_authenticated %}
+            <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+        {% else %}
+            <p>
+                <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+                <a class="btn btn-success" href="/login">Войти</a>
+            </p>
+        {% endif %}
         {% block content %} {% endblock %}
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
