@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Регистрация</h1>
-<form action="" method="post">
+<form id="form-register" action="" method="post">
+    <h1>Регистрация</h1>
     {{ form.hidden_tag() }}
     <p>
         {{ form.email.label }}<br>

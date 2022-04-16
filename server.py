@@ -31,12 +31,12 @@ def reqister():
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
             return render_template('register.html', title='Регистрация',
-                                   form=form, message="Пароли не совпадают")
+                                   form=form, message='Пароли не совпадают')
         db_sess = db_session.create_session()
 
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Регистрация',
-                                   form=form, message="Такой пользователь уже есть")
+                                   form=form, message='Такой пользователь уже есть')
 
         user = User(name=form.name.data, email=form.email.data)
         user.set_password(form.password.data)
@@ -56,8 +56,8 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            return redirect("/")
-        return render_template('login.html', message="Неправильный логин или пароль", form=form)
+            return redirect('/')
+        return render_template('login.html', message='Неправильный логин или пароль', form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -76,4 +76,4 @@ def google_auth():
 
 db_session.global_init('db/sqlite.db')
 
-app.run(host='localhost', port=5000)
+app.run(host='localhost', port=5000, debug=True)
