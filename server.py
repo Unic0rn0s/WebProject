@@ -1,16 +1,24 @@
-from flask import Flask, render_template, redirect
+from requests import post
+from flask import Flask, render_template, redirect, request, jsonify
+from urllib.parse import urlencode
 from data import db_session
 from forms.user import RegisterForm, LoginForm
 from data.users import User
 from flask_login import LoginManager, login_user, login_required, logout_user
-from google_drive_auth import google_drive_auth
+import yadisk
+from yadisk_config import CLIENT_ID, CLIEND_SECRET
+
 
 app = Flask('Sus')
 app.config['SECRET_KEY'] = 'sus))'
 
-
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+# Яндекс.Диск
+client_id = CLIENT_ID
+client_secret = CLIEND_SECRET
+baseurl = 'https://oauth.yandex.ru/'
 
 
 @login_manager.user_loader
@@ -20,9 +28,13 @@ def load_user(user_id):
 
 
 @app.route('/')
-@app.route('/home')
-def home():
-    return render_template('home.html', title='Home')
+def root():
+    return render_template('base.html', title='Amogus')
+
+
+@app.route('/home/<data>')
+def home(data):
+    return render_template('home.html', title='Home', data=data)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -68,10 +80,24 @@ def logout():
     return redirect('/')
 
 
-@app.route('/google_drive_auth')
-def google_auth():
-    google_drive_auth()
-    return redirect('http://localhost:5000/')
+@app.route('/yadisk_auth')
+def yadisk_auth():
+    if request.args.get('code', False):
+        data = {
+            'grant_type': 'authorization_code',
+            'code': request.args.get('code'),
+            'client_id': client_id,
+            'client_secret': client_secret
+        }
+        data = urlencode(data)
+        data = post(baseurl + "token", data).json()
+        print(data['access_token'])
+        y = yadisk.YaDisk(token=data['access_token'])
+        print(y.check_token())
+        print(list(y.listdir("/Images")))
+        return data['access_token']
+    else:
+        return redirect(baseurl + "authorize?response_type=code&client_id={}".format(client_id))
 
 
 db_session.global_init('db/sqlite.db')
