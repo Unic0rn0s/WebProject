@@ -146,6 +146,7 @@ def not_auth(e):
     return redirect('/login')
 
 
+# Добавление раздела
 @app.route('/add_chapter', methods=['POST'])
 @login_required
 def add_chapter():
@@ -160,6 +161,7 @@ def add_chapter():
     return redirect('/home')
 
 
+# Удаление раздела
 @app.route('/delete_chapter', methods=['POST'])
 @login_required
 def delete_chapter():
