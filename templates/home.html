@@ -7,9 +7,44 @@
     {% extends "base.html" %}
 
     {% block content %}
-    <p>
-        {{ data }}
-    </p>
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+    <form method="post" action="/add_chapter">
+        <input class="form-control" placeholder="Название раздела" name="add">
+        <button id="add_chapter" type="submit" class="btn btn-secondary">Добавить</button>
+    </form>
+    <form method="post" action="/delete_chapter">
+        <input class="form-control" placeholder="Название раздела" name="del">
+        <button id="del_chapter" type="submit" class="btn btn-outline-secondary">Удалить</button>
+    </form>
+
+    {% for i in chapters %}
+    <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  {{ i[0] }}
+              </button>
+            </h2>
+
+            <div id="collapseOne" class="accordion-collapse collapse show"
+                 aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+             {% for j in i[1] %}
+              <div class="accordion-body">
+                  {{ j }}
+
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+
     {% endblock %}
 </body>
 </html>

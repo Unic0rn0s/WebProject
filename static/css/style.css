@@ -9,3 +9,16 @@
     margin-right: 40%;
     margin-top: 5%;
 }
+
+#create_chapter {
+    width: 30%;
+    height: 100%;
+}
+
+#add_chapter {
+    width: 100%;
+}
+
+#del_chapter {
+    width: 100%;
+}
