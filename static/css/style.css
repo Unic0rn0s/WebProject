@@ -10,15 +10,28 @@
     margin-top: 5%;
 }
 
-#create_chapter {
-    width: 30%;
-    height: 100%;
+.input-path {
+    width: 20%;
 }
 
-#add_chapter {
-    width: 100%;
+.btn-path {
+    width: 20%;
 }
 
-#del_chapter {
-    width: 100%;
+.btn-chapter {
+    width: 20%;
+    border-radius: 2px;
+    border-color: black;
+}
+
+.files {
+    width: 20%;
+}
+
+.ya-alert {
+    width: 20%;
+}
+
+#my-disk {
+    margin-top: 1%;
 }

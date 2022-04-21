@@ -44,10 +44,9 @@ def home():
     user = load_user(current_user.get_id())
     current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
     if current_user.yandex_disk.check_token():
-        print(yandex_files())
         return render_template('home.html', title='Главная', chapters=yandex_files())
 
-    return render_template('home.html', title='Главная', data='Токен не действителен')
+    return render_template('home.html', title='Главная', error='Токен не действителен')
 
 
 # Страница регистрации
@@ -136,7 +135,14 @@ def yadisk_auth():
 def yandex_files():
     result = list()
     for i in current_user.yandex_disk.listdir('/'):
-        result.append((i.name, [j.name for j in current_user.yandex_disk.listdir(i.path)]))
+        try:
+            files = list()
+            for j in current_user.yandex_disk.listdir(i.path):
+                files.append(j.name)
+            result.append((i.name, files))
+        except Exception:
+            continue
+
     return result
 
 
@@ -148,31 +154,88 @@ def not_auth(e):
 
 # Добавление раздела
 @app.route('/add_chapter', methods=['POST'])
-@login_required
 def add_chapter():
-    name = request.form['add']
-    user = load_user(current_user.get_id())
-    current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
     try:
+        name = request.form['add']
+        user = load_user(current_user.get_id())
+        current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
         current_user.yandex_disk.mkdir(f'/{name}')
     except Exception:
+        if current_user.yandex_disk.check_token():
+            return render_template('home.html', title='Главная',
+                                   chapters=yandex_files(), error='Указан неверный раздел')
         return render_template('home.html', title='Главная',
-                               chapters=yandex_files(), error='Указан неверный раздел')
+                               chapters=[], error='Токен не действителен')
+
     return redirect('/home')
 
 
-# Удаление раздела
+# Удаление раздела/файла
 @app.route('/delete_chapter', methods=['POST'])
-@login_required
 def delete_chapter():
-    name = request.form['del']
-    user = load_user(current_user.get_id())
-    current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
     try:
-        current_user.yandex_disk.remove(f'/{name}')
+        name = request.form['del']
+        user = load_user(current_user.get_id())
+        current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
+        current_user.yandex_disk.remove(name, permanently=True)
     except Exception:
+        if current_user.yandex_disk.check_token():
+            return render_template('home.html', title='Главная',
+                                   chapters=yandex_files(), error='Указан неверный раздел')
         return render_template('home.html', title='Главная',
-                               chapters=yandex_files(), error='Указан неверный раздел')
+                               chapters=[], error='Токен не действителен')
+
+    return redirect('/home')
+
+
+# Загрузка файла на Яндекс.Диск
+@app.route('/add_file', methods=['POST'])
+def add_file():
+    try:
+        name = request.form['add_file']
+        file = request.files['file']
+        print(file.filename)
+        user = load_user(current_user.get_id())
+        current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
+        current_user.yandex_disk.upload(file, f'/{name}/{file.filename}')
+    except Exception:
+        if current_user.yandex_disk.check_token():
+            return render_template('home.html', title='Главная',
+                                   chapters=yandex_files(), error='Неверный файл или раздел')
+        return render_template('home.html', title='Главная',
+                               chapters=[], error='Токен не действителен')
+    return redirect('/home')
+
+
+# Открытие файла в Яндекс.Диске
+@app.route('/open_path', methods=['POST'])
+def open_path():
+    try:
+        user = load_user(current_user.get_id())
+        current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
+        path = request.form['open_path']
+        if path and current_user.yandex_disk.exists(path):
+            directory = path.split('/')[0]
+            path = path.replace('/', '%2F')
+            return redirect(f'https://disk.yandex.ru/client/disk/{directory}'
+                            f'?idApp=client&dialog=slider&idDialog=%2Fdisk{path}')
+        return render_template('home.html', title='Главная',
+                               chapters=yandex_files(), error='Неверный путь')
+    except Exception as e:
+        print(e)
+        return render_template('home.html', title='Главная',
+                               chapters=[], error='Токен не действителен')
+
+
+# Отзыв токена для Яндекс.Диска
+@app.route('/del_token')
+def del_token():
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.get_id()).first()
+    user.yadisk_token = None
+
+    db_sess.add(user)
+    db_sess.commit()
 
     return redirect('/home')
 

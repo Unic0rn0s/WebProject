@@ -25,7 +25,7 @@
                       <a class="nav-link active" aria-current="page" href="/home">Главная</a>
                     </li>
                     <li class="nav-item me-2">
-                      <a class="nav-link" href="/yadisk_auth">Яндекс.Диск</a>
+                      <a class="nav-link" href="/yadisk_auth">Авторизоваться в Яндекс.Диск</a>
                     </li>
                       {% if current_user.is_authenticated %}
                       <li class="nav-item dropdown">
@@ -34,8 +34,7 @@
                         {{ current_user.name }}
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/">Действие</a></li>
-                        <li><a class="dropdown-item" href="/">Действие</a></li>
+                        <li><a class="dropdown-item" href="/del_token">Отозвать токен</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/logout">Выйти</a></li>
                       </ul>

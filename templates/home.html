@@ -9,41 +9,47 @@
     {% block content %}
 
     {% if error %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger ya-alert" role="alert">
         {{ error }}
     </div>
     {% endif %}
     <form method="post" action="/add_chapter">
-        <input class="form-control" placeholder="Название раздела" name="add">
-        <button id="add_chapter" type="submit" class="btn btn-secondary">Добавить</button>
+        <input class="form-control input-path" placeholder="Раздел" name="add">
+        <button type="submit" class="btn btn-secondary btn-path">Добавить раздел</button>
+    </form>
+    <form method="post" enctype="multipart/form-data" action="/add_file">
+        <input class="form-control input-path" placeholder="Раздел" name="add_file">
+        <input type="file" class="form-control input-path" name="file">
+        <button type="submit" class="btn btn-secondary btn-path">Добавить файл</button>
     </form>
     <form method="post" action="/delete_chapter">
-        <input class="form-control" placeholder="Название раздела" name="del">
-        <button id="del_chapter" type="submit" class="btn btn-outline-secondary">Удалить</button>
+        <input class="form-control input-path" placeholder="/Раздел/Файл" name="del">
+        <button type="submit" class="btn btn-secondary btn-path">Удалить</button>
     </form>
+    <form method="post" action="/open_path">
+        <input class="form-control input-path" placeholder="/Раздел/Файл" name="open_path">
+        <button type="submit" class="btn btn-secondary btn-path">Открыть</button>
+    </form>
+    <div id="my-disk">
+        <h5>Мой Яндекс.Диск:</h5>
+    </div>
+    <div id="chapters">
 
     {% for i in chapters %}
-    <div class="accordion" id="accordionExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  {{ i[0] }}
-              </button>
-            </h2>
+      <button type="button" class="btn btn-success btn-chapter">
+          {{ i[0] }}
+      </button>
+    <div>
 
-            <div id="collapseOne" class="accordion-collapse collapse show"
-                 aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-             {% for j in i[1] %}
-              <div class="accordion-body">
-                  {{ j }}
-
-              </div>
-              {% endfor %}
-            </div>
-          </div>
+         <ul class="list-group files">
+            {% for j in i[1] %}
+              <li class="list-group-item">{{ j }}</li>
+            {% endfor %}
+          </ul>
         </div>
+
     {% endfor %}
+    </div>
 
     {% endblock %}
 </body>
