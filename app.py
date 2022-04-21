@@ -7,11 +7,18 @@ from data.users import User
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import yadisk
 from yadisk_config import CLIENT_ID, CLIEND_SECRET
+from flask_restful import Api
+from api.resources import UserResource, UsersListResource
 
 
 # Настройки приложения
-app = Flask('Sus')
+app = Flask(__name__)
 app.config['SECRET_KEY'] = 'sus))'
+
+# API
+api = Api(app)
+api.add_resource(UsersListResource, '/users')
+api.add_resource(UserResource, '/users/<int:user_id>')
 
 # Работа с авторизацией
 login_manager = LoginManager()
@@ -146,12 +153,6 @@ def yandex_files():
     return result
 
 
-# Обработчик ошибки авторизации
-@app.errorhandler(401)
-def not_auth(e):
-    return redirect('/login')
-
-
 # Добавление раздела
 @app.route('/add_chapter', methods=['POST'])
 def add_chapter():
@@ -238,6 +239,12 @@ def del_token():
     db_sess.commit()
 
     return redirect('/home')
+
+
+# Обработчик ошибки авторизации
+@app.errorhandler(401)
+def not_auth(e):
+    return redirect('/login')
 
 
 # Инициализация БД
