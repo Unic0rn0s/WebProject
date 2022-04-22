@@ -32,6 +32,16 @@
     width: 20%;
 }
 
+.ya-success {
+    width: 100%;
+}
+
 #my-disk {
     margin-top: 1%;
+}
+
+.accordion {
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 7%;
 }

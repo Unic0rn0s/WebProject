@@ -8,6 +8,11 @@
 
     {% block content %}
 
+    {% if success %}
+    <div class="alert alert-success ya-success" role="alert">
+        <a class="ya-success" href={{success}}>{{ success }}</a>
+    </div>
+    {% endif %}
     {% if error %}
     <div class="alert alert-danger ya-alert" role="alert">
         {{ error }}
@@ -15,20 +20,24 @@
     {% endif %}
     <form method="post" action="/add_chapter">
         <input class="form-control input-path" placeholder="Раздел" name="add">
-        <button type="submit" class="btn btn-secondary btn-path">Добавить раздел</button>
+        <button type="submit" class="btn btn-secondary btn-path">Создать раздел</button>
     </form>
     <form method="post" enctype="multipart/form-data" action="/add_file">
         <input class="form-control input-path" placeholder="Раздел" name="add_file">
         <input type="file" class="form-control input-path" name="file">
         <button type="submit" class="btn btn-secondary btn-path">Добавить файл</button>
     </form>
-    <form method="post" action="/delete_chapter">
+    <form method="post" action="/delete_path">
         <input class="form-control input-path" placeholder="/Раздел/Файл" name="del">
         <button type="submit" class="btn btn-secondary btn-path">Удалить</button>
     </form>
     <form method="post" action="/open_path">
         <input class="form-control input-path" placeholder="/Раздел/Файл" name="open_path">
         <button type="submit" class="btn btn-secondary btn-path">Открыть</button>
+    </form>
+    <form method="post" action="/download_link">
+        <input class="form-control input-path" placeholder="/Раздел/Файл" name="download_link">
+        <button type="submit" class="btn btn-secondary btn-path">Ссылка на скачивание</button>
     </form>
     <div id="my-disk">
         <h5>Мой Яндекс.Диск:</h5>

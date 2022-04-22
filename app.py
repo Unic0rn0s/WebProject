@@ -9,9 +9,11 @@ import yadisk
 from yadisk_config import CLIENT_ID, CLIEND_SECRET
 from flask_restful import Api
 from api.resources import UserResource, UsersListResource
+from waitress import serve
+import logging
 
 
-# Настройки приложения
+# Создание приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'sus))'
 
@@ -29,6 +31,11 @@ client_id = CLIENT_ID
 client_secret = CLIEND_SECRET
 baseurl = 'https://oauth.yandex.ru/'
 
+# Логирование
+logging.basicConfig(filename='app.log',
+                    format='%(asctime)s %(levelname)s %(name)s %(message)s',
+                    level=logging.INFO)
+
 
 # Загрузка пользователя из БД
 @login_manager.user_loader
@@ -40,7 +47,7 @@ def load_user(user_id):
 # Базовая страница
 @app.route('/')
 def root():
-    return render_template('base.html', title='Amogus')
+    return render_template('amogus.html', title='Amogus')
 
 
 # Домашняя страница
@@ -50,10 +57,11 @@ def home():
     # Проверка токена Яндекс.Диска
     user = load_user(current_user.get_id())
     current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
+    # Если токен действителен:
     if current_user.yandex_disk.check_token():
         return render_template('home.html', title='Главная', chapters=yandex_files())
 
-    return render_template('home.html', title='Главная', error='Токен не действителен')
+    return invalid_token()
 
 
 # Страница регистрации
@@ -76,6 +84,9 @@ def reqister():
 
         db_sess.add(user)
         db_sess.commit()
+
+        logging.info(f'New user {user.name} register')
+
         return redirect('/login')
 
     return render_template('register.html', title='Регистрация', form=form)
@@ -92,6 +103,9 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
+
+            logging.info(f'User {user.name} logged')
+
             return redirect('/home')
         return render_template('login.html', message='Неправильный логин или пароль',
                                form=form, error=None)
@@ -103,6 +117,8 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
+    user = load_user(current_user.get_id())
+    logging.info(f'User {user.name} logout')
     logout_user()
     return redirect('/')
 
@@ -132,6 +148,8 @@ def yadisk_auth():
 
         db_sess.add(user)
         db_sess.commit()
+
+        logging.info(f'User {user.name} got token')
         return redirect('/home')
 
     # Иначе отправляем пользователя на страницу авторизации
@@ -142,11 +160,13 @@ def yadisk_auth():
 def yandex_files():
     result = list()
     for i in current_user.yandex_disk.listdir('/'):
+        # Пока записывается путь, файл уже может быть удалён
         try:
             files = list()
             for j in current_user.yandex_disk.listdir(i.path):
                 files.append(j.name)
             result.append((i.name, files))
+        # Продолжаем работу, еслы такой был найден
         except Exception:
             continue
 
@@ -165,15 +185,14 @@ def add_chapter():
         if current_user.yandex_disk.check_token():
             return render_template('home.html', title='Главная',
                                    chapters=yandex_files(), error='Указан неверный раздел')
-        return render_template('home.html', title='Главная',
-                               chapters=[], error='Токен не действителен')
+        return invalid_token()
 
     return redirect('/home')
 
 
 # Удаление раздела/файла
-@app.route('/delete_chapter', methods=['POST'])
-def delete_chapter():
+@app.route('/delete_path', methods=['POST'])
+def delete_path():
     try:
         name = request.form['del']
         user = load_user(current_user.get_id())
@@ -182,9 +201,8 @@ def delete_chapter():
     except Exception:
         if current_user.yandex_disk.check_token():
             return render_template('home.html', title='Главная',
-                                   chapters=yandex_files(), error='Указан неверный раздел')
-        return render_template('home.html', title='Главная',
-                               chapters=[], error='Токен не действителен')
+                                   chapters=yandex_files(), error='Неверный путь')
+        return invalid_token()
 
     return redirect('/home')
 
@@ -193,18 +211,18 @@ def delete_chapter():
 @app.route('/add_file', methods=['POST'])
 def add_file():
     try:
+        # Для загрузки нужно содержимое файла и путь на Яндекс.Диске
         name = request.form['add_file']
         file = request.files['file']
-        print(file.filename)
         user = load_user(current_user.get_id())
         current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
+        # Путь на диске - название файла
         current_user.yandex_disk.upload(file, f'/{name}/{file.filename}')
     except Exception:
         if current_user.yandex_disk.check_token():
             return render_template('home.html', title='Главная',
                                    chapters=yandex_files(), error='Неверный файл или раздел')
-        return render_template('home.html', title='Главная',
-                               chapters=[], error='Токен не действителен')
+        return invalid_token()
     return redirect('/home')
 
 
@@ -216,16 +234,47 @@ def open_path():
         current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
         path = request.form['open_path']
         if path and current_user.yandex_disk.exists(path):
-            directory = path.split('/')[0]
-            path = path.replace('/', '%2F')
-            return redirect(f'https://disk.yandex.ru/client/disk/{directory}'
-                            f'?idApp=client&dialog=slider&idDialog=%2Fdisk{path}')
+            # Отправляем пользователя по сгенерированному url
+            return redirect(url_file(path))
         return render_template('home.html', title='Главная',
                                chapters=yandex_files(), error='Неверный путь')
-    except Exception as e:
-        print(e)
+    except Exception:
+        return invalid_token()
+
+
+# Получение ссылки на скачивание файла
+@app.route('/download_link', methods=['POST'])
+def download_link():
+    try:
+        path = request.form['download_link']
+        user = load_user(current_user.get_id())
+        current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
+        if path and current_user.yandex_disk.exists(path):
+            # Для генерации ссылки нужен только путь на Яндекс.Диске
+            # Ссылка действительна для любого пользователя
+            link = current_user.yandex_disk.get_download_link(path)
+            return render_template('home.html', title='Главная',
+                                   chapters=yandex_files(), success=link)
         return render_template('home.html', title='Главная',
-                               chapters=[], error='Токен не действителен')
+                               chapters=yandex_files(), error='Неверный путь')
+    except Exception:
+        return invalid_token()
+
+
+# Сообщаем, если токен не работает
+def invalid_token():
+    # Передаём пустой список в параметр разделов, чтобы цикл в шаблоне не запускался
+    return render_template('home.html', title='Главная',
+                           chapters=[], error='Токен не действителен')
+
+
+# Получение url для файла на Яндекс.Диске
+def url_file(path):
+    # Приводим путь к файлу в нужный формат
+    directory = path.split('/')[0]
+    path = path.replace('/', '%2F')
+    return f'https://disk.yandex.ru/client/disk/{directory}' \
+           f'?idApp=client&dialog=slider&idDialog=%2Fdisk{path}'
 
 
 # Отзыв токена для Яндекс.Диска
@@ -238,6 +287,7 @@ def del_token():
     db_sess.add(user)
     db_sess.commit()
 
+    logging.info(f'User {user.name} deleted the token')
     return redirect('/home')
 
 
@@ -252,4 +302,7 @@ db_session.global_init('db/sqlite.db')
 
 # Запуск приложения
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
+    host, port = '0.0.0.0', 5000
+    # app.run(host=host, port=port, debug=True)
+    logging.info(f'App started, host:{host} port:{port}')
+    serve(app, host=host, port=port)
