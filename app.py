@@ -6,7 +6,7 @@ from forms.user import RegisterForm, LoginForm
 from data.users import User
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import yadisk
-from yadisk_config import CLIENT_ID, CLIEND_SECRET
+from yadisk_config import CLIENT_ID, CLIENT_SECRET
 from flask_restful import Api
 from api.resources import UserResource, UsersListResource
 from waitress import serve
@@ -28,7 +28,7 @@ login_manager.init_app(app)
 
 # Яндекс.Диск
 client_id = CLIENT_ID
-client_secret = CLIEND_SECRET
+client_secret = CLIENT_SECRET
 baseurl = 'https://oauth.yandex.ru/'
 
 # Логирование
@@ -251,7 +251,7 @@ def download_link():
         current_user.yandex_disk = yadisk.YaDisk(token=user.yadisk_token)
         if path and current_user.yandex_disk.exists(path):
             # Для генерации ссылки нужен только путь на Яндекс.Диске
-            # Ссылка действительна для любого пользователя
+            # Ссылка действительна для всех
             link = current_user.yandex_disk.get_download_link(path)
             return render_template('home.html', title='Главная',
                                    chapters=yandex_files(), success=link)

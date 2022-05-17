@@ -1,0 +1,126 @@
+2022-04-22 11:44:45,596 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 11:44:45,599 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 11:52:57,100 INFO root User 123 logged
+2022-04-22 11:53:09,211 INFO root User 123 got token
+2022-04-22 11:59:11,152 INFO root User 123 got token
+2022-04-22 12:26:35,600 INFO root User 123 deleted the token
+2022-04-22 12:26:38,031 INFO root User 123 got token
+2022-04-22 12:34:28,797 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 12:34:28,799 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 12:35:54,827 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 12:35:54,829 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 12:36:22,338 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 12:36:22,340 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 12:39:10,742 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 12:39:10,744 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 12:40:27,815 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 12:40:27,817 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 12:40:33,245 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 12:40:33,247 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 12:46:07,421 INFO root User 123 deleted the token
+2022-04-22 12:46:14,643 INFO root User 123 got token
+2022-04-22 13:01:50,931 INFO root User 222 logged
+2022-04-22 13:02:35,316 INFO root User 222 got token
+2022-04-22 13:04:15,074 INFO root User 222 deleted the token
+2022-04-22 13:04:30,700 INFO root User 222 logout
+2022-04-22 13:09:47,904 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 13:09:47,906 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 13:13:15,733 INFO root User 123 got token
+2022-04-22 13:17:02,919 INFO root User 123 got token
+2022-04-22 13:17:07,341 INFO root User 123 deleted the token
+2022-04-22 13:17:09,751 INFO root User 123 logout
+2022-04-22 13:23:22,125 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 13:23:22,127 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 13:42:20,132 INFO root User 123 logout
+2022-04-22 14:55:38,426 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 14:55:38,428 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 14:55:43,812 INFO root User 123 logged
+2022-04-22 14:57:59,472 INFO root User 123 got token
+2022-04-22 14:58:32,478 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 14:58:32,480 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 14:58:40,579 INFO root User 123 got token
+2022-04-22 14:58:46,996 INFO root User 123 got token
+2022-04-22 15:07:58,318 INFO root User 123 logged
+2022-04-22 15:09:20,536 INFO root User 123 got token
+2022-04-22 15:17:41,252 INFO root User 123 deleted the token
+2022-04-22 15:17:43,489 INFO root User 123 logout
+2022-04-22 15:17:54,156 INFO root User 123 logged
+2022-04-22 15:18:02,080 INFO root User 123 got token
+2022-04-22 15:18:23,465 INFO root User 123 logout
+2022-04-22 15:29:21,558 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 15:29:21,560 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 15:30:04,025 INFO root User 123 logged
+2022-04-22 15:30:55,192 INFO root User 123 got token
+2022-04-22 15:32:21,684 INFO root User 123 logout
+2022-04-22 15:33:27,327 INFO root New user helpme register
+2022-04-22 15:33:39,433 INFO root User helpme logged
+2022-04-22 15:33:52,610 INFO root User helpme deleted the token
+2022-04-22 15:34:39,064 INFO root User helpme got token
+2022-04-22 15:40:57,005 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 15:40:57,007 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-22 15:41:42,364 INFO root User helpme deleted the token
+2022-04-22 15:41:45,012 INFO root User helpme logout
+2022-04-22 17:26:10,574 INFO root User 123 logged
+2022-04-22 17:26:27,993 INFO root User 123 logout
+2022-04-22 18:27:45,712 INFO root User 123 logged
+2022-04-22 18:27:50,393 INFO root User 123 logout
+2022-04-22 18:40:16,536 INFO root New user Пупкин Вася Владимирович register
+2022-04-22 18:40:22,902 INFO root User Пупкин Вася Владимирович logged
+2022-04-22 18:40:49,054 INFO root User Пупкин Вася Владимирович got token
+2022-04-22 18:41:18,183 INFO root User Пупкин Вася Владимирович logout
+2022-04-22 18:41:45,114 INFO root User 123 logged
+2022-04-22 18:41:49,084 INFO root User 123 got token
+2022-04-22 18:41:57,505 INFO root User 123 deleted the token
+2022-04-22 18:43:43,342 INFO root User 123 got token
+2022-04-22 18:47:12,184 INFO root User 123 deleted the token
+2022-04-22 18:47:16,775 INFO root User 123 got token
+2022-04-22 18:47:29,524 INFO root User 123 deleted the token
+2022-04-22 18:47:31,407 INFO root User 123 logout
+2022-04-22 18:47:47,946 INFO root User Пупкин Вася Владимирович logged
+2022-04-22 18:47:58,827 INFO root User Пупкин Вася Владимирович deleted the token
+2022-04-22 20:27:59,299 INFO root App started, host:0.0.0.0 port:5000
+2022-04-22 20:27:59,312 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-27 20:28:07,711 INFO root App started, host:0.0.0.0 port:5000
+2022-04-27 20:28:07,713 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-27 20:28:54,090 INFO root App started, host:0.0.0.0 port:5000
+2022-04-27 20:28:54,092 INFO waitress Serving on http://0.0.0.0:5000
+2022-04-27 20:29:21,119 INFO root App started, host:0.0.0.0 port:5000
+2022-04-27 20:29:21,121 INFO waitress Serving on http://0.0.0.0:5000
+2022-05-10 20:24:33,411 INFO root App started, host:0.0.0.0 port:5000
+2022-05-10 20:24:33,413 INFO waitress Serving on http://0.0.0.0:5000
+2022-05-10 20:25:20,686 INFO root User 123 logged
+2022-05-15 21:19:39,576 INFO root App started, host:0.0.0.0 port:5000
+2022-05-15 21:19:39,579 INFO waitress Serving on http://0.0.0.0:5000
+2022-05-15 21:21:10,203 INFO root User 123 logged
+2022-05-15 21:25:29,863 ERROR app Exception on /yadisk_auth [GET]
+Traceback (most recent call last):
+  File "C:\Users\Илья\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2070, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\Илья\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1515, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\Илья\AppData\Local\Programs\Python\Python39\lib\site-packages\flask_restful\__init__.py", line 271, in error_router
+    return original_handler(e)
+  File "C:\Users\Илья\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1513, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\Илья\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1499, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "C:\Users\Илья\AppData\Local\Programs\Python\Python39\lib\site-packages\flask_login\utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Илья\PycharmProjects\WebProject\app.py", line 142, in yadisk_auth
+    token = data['access_token']
+KeyError: 'access_token'
+2022-05-15 21:25:57,519 INFO root App started, host:0.0.0.0 port:5000
+2022-05-15 21:25:57,520 INFO waitress Serving on http://0.0.0.0:5000
+2022-05-15 21:26:18,429 INFO root User 123 got token
+2022-05-15 21:26:35,116 INFO root User 123 deleted the token
+2022-05-15 21:26:37,628 INFO root User 123 logout
+2022-05-15 22:25:24,711 INFO root App started, host:0.0.0.0 port:5000
+2022-05-15 22:25:24,713 INFO waitress Serving on http://0.0.0.0:5000
+2022-05-16 01:38:55,880 INFO root App started, host:0.0.0.0 port:5000
+2022-05-16 01:38:55,882 INFO waitress Serving on http://0.0.0.0:5000
+2022-05-16 02:16:37,129 INFO root App started, host:0.0.0.0 port:5000
+2022-05-16 02:16:37,131 INFO waitress Serving on http://0.0.0.0:5000
+2022-05-16 02:37:13,330 INFO root App started, host:0.0.0.0 port:5000
+2022-05-16 02:37:13,457 INFO waitress Serving on http://0.0.0.0:5000
+2022-05-16 02:48:37,673 INFO root App started, host:0.0.0.0 port:5000
+2022-05-16 02:48:37,675 INFO waitress Serving on http://0.0.0.0:5000
